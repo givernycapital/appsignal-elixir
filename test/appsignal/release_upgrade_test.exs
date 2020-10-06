@@ -31,7 +31,7 @@ defmodule Appsignal.ReleaseUpgradeTest do
 
         Process.monitor(config_reload_pid)
 
-        assert_receive({:DOWN, _, :process, ^config_reload_pid, _}, 5000)
+        assert_receive({:DOWN, _, :process, ^config_reload_pid, _}, 10_000)
 
         assert config()[:name] == "AppSignal test suite app v2"
         assert Nif.env_get("_APPSIGNAL_APP_NAME") == 'AppSignal test suite app v2'
