@@ -233,7 +233,7 @@ defmodule Appsignal.Transaction do
   - `backtrace`: Backtrace of the error; will be JSON encoded
   """
   @spec set_error(Transaction.t() | any(), String.t(), String.t(), any) :: Transaction.t() | nil
-  def set_error(%Transaction{} = transaction, name, message, backtrace) do
+  def set_error(%Transaction{} = transaction, name, _message, backtrace) do
     name = name |> String.split_at(@max_name_size) |> elem(0)
 
     backtrace_data =
@@ -241,7 +241,7 @@ defmodule Appsignal.Transaction do
       |> Appsignal.Backtrace.from_stacktrace()
       |> Appsignal.Utils.DataEncoder.encode()
 
-    :ok = Nif.set_error(transaction.resource, name, message, backtrace_data)
+    :ok = Nif.set_error(transaction.resource, name, "REDACTED", backtrace_data)
     transaction
   end
 
